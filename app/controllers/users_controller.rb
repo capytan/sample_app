@@ -9,10 +9,8 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.first
     @user = User.find(params[:id])
-    # => app/views/users/show.html.erb
-    # debugger
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
   
   def new
@@ -58,15 +56,6 @@ class UsersController < ApplicationController
   end
   
   # beforeアクション
-
-    # ログイン済みユーザーかどうか確認
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
 
     # 正しいユーザーかどうか確認
     def correct_user
